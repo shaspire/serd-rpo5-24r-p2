@@ -7,7 +7,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
-	list_display = 'name'
+	list_display = ('name',)
 
 @admin.register(Ad)
 class AdAdmin(admin.ModelAdmin):
