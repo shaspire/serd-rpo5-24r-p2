@@ -48,7 +48,7 @@ def profile_view(request):
 	return render(request, 'profile.html', {'my_ads': my_ads, 'favorites': favorites})
 
 
-# --- ОБЪЯВЛЕНИЯ (КАТАЛОГ И ДЕТАЛИ) ---
+# --- ОБЪЯВЛЕНИЯ ---
 def ad_list_view(request, slug=None):
 	ads = Ad.objects.filter(is_moderated=True)
 	if slug: ads = ads.filter(category__slug=slug)
@@ -86,11 +86,11 @@ def ad_detail_view(request, uuid):
 @login_required
 def ad_create_view(request):
 	if request.method == 'POST':
-		form = AdForm(request.POST, request.FILES) # request.FILES обязателен для картинок!
+		form = AdForm(request.POST, request.FILES)
 		if form.is_valid():
 			ad = form.save(commit=False)
 			ad.author = request.user
-			ad.is_moderated = False # Отправляем на модерацию
+			ad.is_moderated = False
 			ad.save()
 			messages.success(request, 'Объявление отправлено на проверку.')
 			return redirect('profile')
