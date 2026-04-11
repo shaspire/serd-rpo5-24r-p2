@@ -9,29 +9,35 @@
             <div class="card-body p-4">
                 <h3 class="text-center mb-4">Регистрация</h3>
                 <form method="POST">
+                    {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Имя пользователя</label>
-                        <input type="text" class="form-control">
+                        <input type="text" name="username" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control">
+                        <input type="email" name="email" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Пароль</label>
-                        <input type="password" class="form-control">
+                        <input type="password" name="password1" class="form-control" required>
                     </div>
                     <div class="mb-4">
                         <label class="form-label">Подтвердите пароль</label>
-                        <input type="password" class="form-control">
+                        <input type="password" name="password2" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
                 </form>
                 <div class="text-center mt-3">
-                    <small>Уже есть аккаунт? <a href="#">Войти</a></small>
+                    <small>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></small>
                 </div>
             </div>
         </div>
+        {% if form.errors %}
+        <div class="alert alert-danger mt-4">{{ form.errors.as_ul }}</div>
+        {% endif %}
     </div>
 </div>
+
+
 {% endblock %}

@@ -13,16 +13,17 @@ from .forms import UserRegisterForm, AdForm
 
 # --- АВТОРИЗАЦИЯ ---
 def register_view(request):
-	if request.user.is_authenticated: return redirect('ad_list')
+	if request.user.is_authenticated: return redirect('profile')
 	if request.method == 'POST':
 		form = UserRegisterForm(request.POST)
 		if form.is_valid():
-			form.save()
-			messages.success(request, 'Аккаунт создан! Теперь вы можете войти.')
-			return redirect('login')
+			user = form.save()
+			login(request, user)
+			return redirect('profile')
 	else:
 		form = UserRegisterForm()
 	return render(request, 'register.html', {'form': form})
+
 
 def login_view(request):
 	if request.user.is_authenticated: return redirect('profile')
@@ -43,9 +44,9 @@ def logout_view(request):
 # --- ПРОФИЛЬ ---
 @login_required
 def profile_view(request):
-	my_ads = Ad.objects.filter(author=request.user).order_by('-created_at')
+	user_ads = Ad.objects.filter(author=request.user).order_by('-created_at')
 	favorites = Favorite.objects.filter(user=request.user).select_related('ad')
-	return render(request, 'profile.html', {'my_ads': my_ads, 'favorites': favorites})
+	return render(request, 'profile.html', {'user_ads': user_ads, 'favorites': favorites})
 
 
 # --- ОБЪЯВЛЕНИЯ ---
@@ -65,10 +66,10 @@ def ad_list_view(request, slug=None):
 	else: ads = ads.order_by('-created_at')
 
 	# Пагинация
-	page_obj = Paginator(ads, 9).get_page(request.GET.get('page'))
+	ads = Paginator(ads, 9).get_page(request.GET.get('page'))
 
 	context = {
-		'page_obj': page_obj,
+		'ads': ads,
 		'categories': Category.objects.all(),
 		'banners': Banner.objects.filter(is_active=True),
 		'current_category': slug,

@@ -5,11 +5,10 @@ from .models import Ad
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField(required=True, label='Email')
-	username = forms.CharField(max_length=30, required=True, label='Username')
 
-	class Meta(UserCreationForm.Meta):
+	class Meta:
 		model = User
-		fields = ('username', 'email')
+		fields = ('username', 'email', 'password1', 'password2')
 
 
 class AdForm(forms.ModelForm):

@@ -5,9 +5,9 @@ import uuid
 
 
 class Category(models.Model):
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=100, verbose_name='Название')
 	image = models.ImageField(upload_to='categories/', blank=True, null=True, verbose_name='Изображение')
-	slug = models.SlugField(max_length=100, unique=True, blank=True)
+	slug = models.SlugField(max_length=100, unique=True, blank=True, help_text='Будет сгенерирован автоматически')
 
 	def save(self, *args, **kwargs):
 		if not self.slug:
@@ -40,9 +40,11 @@ class Ad(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 	is_moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
+	is_vip = models.BooleanField(default=False, verbose_name='Спонсировано')
 
 	def __str__(self):
 		return self.title
+
 
 class Favorite(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')

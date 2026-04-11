@@ -17,11 +17,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Все объявления</a></li>
-                <li class="nav-item"><a class="nav-link text-warning" href="#">+ Создать</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Профиль</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Выйти</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Войти</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Регистрация</a></li>
+				{% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link text-warning" href="{% url 'ad_create' %}">+ Создать</a></li>
+				<li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Профиль</a></li>
+				{% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Авторизация</a></li>
+				{% endif %}
             </ul>
         </div>
     </div>
