@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать объявление - Ad-Project{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Добавить объявление</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Заголовок</label>
+                        <input type="text" class="form-control" placeholder="Что вы продаете?">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Категория</label>
+                        <select class="form-select">
+                            <option>Электроника</option>
+                            <option>Спорт</option>
+                            <option>Недвижимость</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Цена (₸)</label>
+                        <input type="number" class="form-control" placeholder="0">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Описание</label>
+                        <textarea class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Фотография</label>
+                        <input type="file" class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">Сохранить объявление</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

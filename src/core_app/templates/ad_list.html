@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Все объявления - Ad-Project{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Доска объявлений</h1>
+    <a href="#" class="btn btn-primary">+ Добавить объявление</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 border-warning shadow-sm">
+            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Картинка">
+            <div class="card-body">
+                <span class="badge bg-warning text-dark mb-2">ТОП ✨</span>
+                <h5 class="card-title">MacBook Pro M2 (2023)</h5>
+                <p class="card-text text-muted mb-1"><small>Категория: Электроника</small></p>
+                <h5 class="text-primary fw-bold">750 000 ₸</h5>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <a href="#" class="btn btn-outline-dark w-100">Подробнее</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Картинка">
+            <div class="card-body">
+                <h5 class="card-title">Горный велосипед Stern</h5>
+                <p class="card-text text-muted mb-1"><small>Категория: Спорт</small></p>
+                <h5 class="text-primary fw-bold">85 000 ₸</h5>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <a href="#" class="btn btn-outline-dark w-100">Подробнее</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
