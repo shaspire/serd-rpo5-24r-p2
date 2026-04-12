@@ -32,7 +32,7 @@ class Ad(models.Model):
 	city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Город')
 
 	title = models.CharField(max_length=200)
-	description = models.TextField()
+	description = models.TextField(default='', blank=True, null=True)
 	price = models.PositiveIntegerField(verbose_name='Цена (в тенге)', help_text='Укажите 0, если бесплатно')
 	image = models.ImageField(upload_to='ads/', blank=True, null=True, verbose_name='Изображение')
 
@@ -48,8 +48,7 @@ class Ad(models.Model):
 
 class Favorite(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-	ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='favorited')
-	image = models.ImageField(upload_to='categories/', blank=True, null=True, verbose_name='Изображение')
+	ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='favorited_by')
 
 	class Meta:
 		unique_together = ('user','ad')

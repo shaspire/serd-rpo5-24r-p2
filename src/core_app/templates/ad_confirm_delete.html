@@ -7,11 +7,12 @@
     <div class="col-md-6 text-center">
         <div class="alert alert-danger shadow-sm">
             <h3 class="alert-heading">Вы уверены?</h3>
-            <p>Вы действительно хотите удалить объявление <strong>"MacBook Pro M2"</strong>? Это действие нельзя отменить.</p>
+            <p>Вы действительно хотите удалить объявление <strong>"{{ ad }}"</strong>? Это действие нельзя отменить.</p>
             <hr>
             <form method="POST">
+                {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Да, удалить</button>
-                <a href="#" class="btn btn-secondary">Отмена</a>
+                <a href="{% url 'ad_detail' uuid=ad.uuid %}" class="btn btn-secondary">Отмена</a>
             </form>
         </div>
     </div>

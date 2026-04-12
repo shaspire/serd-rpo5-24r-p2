@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 
-from .models import Ad, Category, Favorite, Banner
+from .models import Ad, Category, Favorite, Banner, City
 from .forms import UserRegisterForm, AdForm
 
 
@@ -36,6 +36,7 @@ def login_view(request):
 		form = AuthenticationForm()
 	return render(request, 'login.html', {'form': form})
 
+
 def logout_view(request):
 	logout(request)
 	return redirect('ad_list')
@@ -54,15 +55,17 @@ def ad_list_view(request, slug=None):
 	ads = Ad.objects.filter(is_moderated=True)
 	if slug: ads = ads.filter(category__slug=slug)
 
+	city = request.GET.get('city')
+	if city: ads = ads.filter(city__name=city)
+
 	# Поиск
 	q = request.GET.get('q')
 	if q: ads = ads.filter(Q(title__icontains=q) | Q(description__icontains=q))
 
 	# Сортировка
 	sort = request.GET.get('sort')
-	if sort == 'cheap': ads = ads.order_by('price', '-created_at')
-	elif sort == 'expensive': ads = ads.order_by('-price', '-created_at')
-	elif sort == 'free': ads = ads.filter(price=0).order_by('-created_at')
+	if sort == 'asc': ads = ads.order_by('price', '-created_at')
+	elif sort == 'desc': ads = ads.order_by('-price', '-created_at')
 	else: ads = ads.order_by('-created_at')
 
 	# Пагинация
@@ -71,11 +74,13 @@ def ad_list_view(request, slug=None):
 	context = {
 		'ads': ads,
 		'categories': Category.objects.all(),
+		'cities': City.objects.all(),
 		'banners': Banner.objects.filter(is_active=True),
 		'current_category': slug,
 		'query_params': request.GET.copy().pop('page', True) and request.GET.urlencode()
 	}
 	return render(request, 'ad_list.html', context)
+
 
 def ad_detail_view(request, uuid):
 	ad = get_object_or_404(Ad, uuid=uuid)
@@ -91,9 +96,8 @@ def ad_create_view(request):
 		if form.is_valid():
 			ad = form.save(commit=False)
 			ad.author = request.user
-			ad.is_moderated = False
 			ad.save()
-			messages.success(request, 'Объявление отправлено на проверку.')
+			messages.success(request, f'Объявление {ad.title} отправлено на проверку.')
 			return redirect('profile')
 	else:
 		form = AdForm()
@@ -108,8 +112,10 @@ def ad_update_view(request, uuid):
 	if request.method == 'POST':
 		form = AdForm(request.POST, request.FILES, instance=ad)
 		if form.is_valid():
-			form.save()
-			messages.success(request, 'Объявление обновлено.')
+			ad = form.save(commit=False)
+			ad.is_moderated = False
+			ad.save()
+			messages.success(request, 'Объявление обновлено. Оно должно пройти новую проверку, прежде чем стать активным')
 			return redirect('ad_detail', uuid=ad.uuid)
 	else:
 		form = AdForm(instance=ad)
@@ -123,7 +129,7 @@ def ad_delete_view(request, uuid):
 
 	if request.method == 'POST':
 		ad.delete()
-		messages.success(request, 'Объявление удалено.')
+		messages.success(request, f'Объявление {ad.title} удалено.')
 		return redirect('profile')
 	return render(request, 'ad_confirm_delete.html', {'ad': ad})
 

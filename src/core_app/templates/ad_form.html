@@ -11,35 +11,40 @@
             </div>
             <div class="card-body">
                 <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Заголовок</label>
-                        <input type="text" class="form-control" placeholder="Что вы продаете?">
+                        {{ form.title }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Категория</label>
-                        <select class="form-select">
-                            <option>Электроника</option>
-                            <option>Спорт</option>
-                            <option>Недвижимость</option>
-                        </select>
+                        {{ form.category }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Город</label>
+                        {{ form.city }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Цена (₸)</label>
-                        <input type="number" class="form-control" placeholder="0">
+                        {{ form.price }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Описание</label>
-                        <textarea class="form-control" rows="4"></textarea>
+                        {{ form.description }}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Фотография</label>
-                        <input type="file" class="form-control">
+                        {{ form.image }}
                     </div>
-
-                    <button type="submit" class="btn btn-success w-100">Сохранить объявление</button>
+                    <button type="submit" class="btn btn-success w-100">
+                        Сохранить объявление
+                    </button>
                 </form>
             </div>
         </div>
+        {% if form.errors %}
+        <div class="alert alert-danger mt-4">{{ form.errors.as_ul }}</div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

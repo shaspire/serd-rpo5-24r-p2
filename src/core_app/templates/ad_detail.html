@@ -5,9 +5,9 @@
 {% block content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Главная</a></li>
-        <li class="breadcrumb-item"><a href="#">Электроника</a></li>
-        <li class="breadcrumb-item active" aria-current="page">MacBook Pro M2</li>
+        <li class="breadcrumb-item"><a href="{% url 'ad_list' %}">Главная</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'category_list' slug=ad.category.slug %}">{{ ad.category }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ ad }}</li>
     </ol>
 </nav>
 
@@ -16,22 +16,35 @@
         <img src="https://via.placeholder.com/600x400" class="img-fluid rounded" alt="Картинка объявления">
     </div>
     <div class="col-md-6 d-flex flex-column">
-        <h2 class="mb-3">MacBook Pro M2 (2023)</h2>
-        <h3 class="text-primary fw-bold mb-4">750 000 ₸</h3>
+        <h2 class="mb-3">{{ ad }}</h2>
+        <h3 class="text-primary fw-bold mb-4">{{ ad.price }} ₸</h3>
 
         <h5>Описание:</h5>
-        <p class="text-secondary">Продаю почти новый макбук. Использовался 2 месяца для учебы. Состояние идеальное, батарея 100%. Коробка и зарядка в комплекте.</p>
+        <p class="text-secondary">{{ ad.description }}</p>
 
         <div class="mt-auto p-3 bg-light rounded">
-            <p class="mb-1"><strong>Автор:</strong> Имя Пользователя</p>
+            <p class="mb-1"><strong>Продавец:</strong> {{ ad.author.username }}</p>
+            <p class="mb-1"><strong>Город:</strong> <a href="{% url 'ad_list' %}?city={{ ad.city }}">{{ ad.city }}</a></p>
             <p class="mb-3"><strong>Телефон:</strong> +7 (777) 123-45-67</p>
 
+            {% if user == ad.author %}
             <div class="d-grid gap-2 d-md-block">
-                <a href="#" class="btn btn-warning">Редактировать</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-                <a href="#" class="btn btn-outline-danger">❤️ В избранное</a>
+                <a href="{% url 'ad_update' uuid=ad.uuid %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'ad_delete' uuid=ad.uuid %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
+                <a href="{% url 'toggle_favorite' uuid=ad.uuid %}" class="btn btn-outline-danger">
+                    {% if is_favorite %}
+                    💔 Удалить из избранного
+                    {% else %}
+                    ❤️ В избранное
+                    {% endif %}
+                </a>
             </div>
         </div>
     </div>
 </div>
+
+{% for message in messages %}
+    <div class="alert alert-primary mt-2">{{ message }}</div>
+{% endfor %}
 {% endblock %}
