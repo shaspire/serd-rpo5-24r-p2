@@ -1,6 +1,7 @@
+!__init__.py
+!.gitkeep
 __pycache__
 *sqlite3
 **/migrations/*
-!__init__.py
-media
 src/static
+media
