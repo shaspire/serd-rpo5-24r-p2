@@ -13,7 +13,7 @@
 
 <div class="row bg-white p-4 rounded shadow-sm mt-3">
     <div class="col-md-6">
-        <img src="{{ ad.image.url }}" class="img-fluid rounded" alt="Картинка объявления">
+        <img src="{{ ad.get_image_url }}" class="img-fluid rounded" alt="Картинка объявления">
     </div>
     <div class="col-md-6 d-flex flex-column">
         <h2 class="mb-3">{{ ad }}</h2>

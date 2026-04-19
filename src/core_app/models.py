@@ -42,6 +42,13 @@ class Ad(models.Model):
 	is_moderated = models.BooleanField(default=False, verbose_name='Прошло модерацию')
 	is_vip = models.BooleanField(default=False, verbose_name='Спонсировано')
 
+	@property
+	def get_image_url(self):
+		if self.image and hasattr(self.image, 'url'):
+			return self.image.url
+		else:
+			return "/static/img/placeholder.svg"
+
 	def __str__(self):
 		return self.title
 
